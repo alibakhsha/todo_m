@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_m/gen/assets.gen.dart';
-import 'package:todo_m/home_screen.dart';
+import 'package:todo_m/view/home_screen.dart';
 
 class FirstScreen extends StatelessWidget {
   void getStartedButtonHandler() {

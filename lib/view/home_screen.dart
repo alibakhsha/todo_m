@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_m/add_task_screen.dart';
+import 'package:todo_m/view/add_task_screen.dart';
 import 'package:todo_m/controller/home_controller.dart';
-import 'package:todo_m/edit_task_screen.dart';
+import 'package:todo_m/view/edit_task_screen.dart';
 import 'package:todo_m/gen/assets.gen.dart';
 
 class HomeScreen extends StatelessWidget {

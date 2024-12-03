@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:todo_m/first_screen.dart';
-import 'package:todo_m/thems.dart';
+import 'package:todo_m/view/first_screen.dart';
+import 'package:todo_m/component/thems.dart';
 
 void main() {
   runApp(const MyApp());

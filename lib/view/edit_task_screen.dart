@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_m/controller/home_controller.dart';
-import 'package:todo_m/edit_page_complete_screen.dart';
-import 'package:todo_m/home_screen.dart';
+import 'package:todo_m/view/edit_page_complete_screen.dart';
+import 'package:todo_m/view/home_screen.dart';
 
-import 'gen/assets.gen.dart';
+import '../gen/assets.gen.dart';
 
 class EditTaskScreen extends StatelessWidget {
   final HomeController controller = Get.put(HomeController());
