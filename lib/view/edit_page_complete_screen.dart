@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import 'package:todo_m/controller/home_controller.dart';
+import 'package:todo_m/models/data_model.dart';
 
 import '../gen/assets.gen.dart';
 
-class EditPageCompleteScreen extends StatefulWidget {
-  const EditPageCompleteScreen({super.key});
+class EditPageCompleteScreen extends StatelessWidget {
 
-  @override
-  // ignore: library_private_types_in_public_api
-  _EditPageCompleteScreen createState() => _EditPageCompleteScreen();
-}
-
-class _EditPageCompleteScreen extends State<EditPageCompleteScreen> {
+  final HomeController controller = Get.put(HomeController());
   final _taskGroups = ['Work', 'gym', 'study', 'Other'];
   String? _selectedTaskGroup;
   final TextEditingController _taskNameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  DateTime? _startDate;
-  DateTime? _endDate;
+  final Rx<DateTime?> _startDate = Rx<DateTime?>(null);
+  final Rx<DateTime?> _endDate = Rx<DateTime?>(null);
 
   Future<void> _pickDate(BuildContext context, bool isStartDate) async {
     final DateTime? picked = await showDatePicker(
@@ -26,20 +24,35 @@ class _EditPageCompleteScreen extends State<EditPageCompleteScreen> {
       lastDate: DateTime(2100),
     );
     if (picked != null) {
-      setState(() {
-        if (isStartDate) {
-          _startDate = picked;
-        } else {
-          _endDate = picked;
-        }
-      });
+      if (isStartDate) {
+        _startDate.value = picked;
+      } else {
+        _endDate.value = picked;
+      }
     }
   }
 
-  void addTaskButtonHandler() {}
+  void editTaskButtonHandler() {
+    if (_selectedTaskGroup == null ||
+        _taskNameController == null ||
+        _descriptionController == null ||
+        _startDate == null ||
+        _endDate == null) {
+      Get.snackbar(
+        'Snackbar',
+        'Please complete the fields correctly.',
+        snackPosition: SnackPosition.BOTTOM,
+        forwardAnimationCurve: Curves.elasticInOut,
+        reverseAnimationCurve: Curves.easeOut,
+      );
+    } else {
+      // Get.offAll(HomeScreen());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+
     var textTheme = Theme.of(context).textTheme;
     var size = MediaQuery.of(context).size;
     return Scaffold(
@@ -63,7 +76,8 @@ class _EditPageCompleteScreen extends State<EditPageCompleteScreen> {
                     height: 63,
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: const BorderRadius.all(Radius.circular(15)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
                         boxShadow: [
                           BoxShadow(
                               color: const Color.fromARGB(255, 95, 51, 225)
@@ -85,7 +99,8 @@ class _EditPageCompleteScreen extends State<EditPageCompleteScreen> {
                         ),
                         labelText: 'Task Group',
                         labelStyle: textTheme.bodySmall,
-                        border: const OutlineInputBorder(borderSide: BorderSide.none),
+                        border: const OutlineInputBorder(
+                            borderSide: BorderSide.none),
                       ),
                       value: _selectedTaskGroup,
                       items: _taskGroups.map((group) {
@@ -95,9 +110,7 @@ class _EditPageCompleteScreen extends State<EditPageCompleteScreen> {
                         );
                       }).toList(),
                       onChanged: (value) {
-                        setState(() {
-                          _selectedTaskGroup = value;
-                        });
+                        _selectedTaskGroup = value;
                       },
                     ),
                   ),
@@ -106,7 +119,8 @@ class _EditPageCompleteScreen extends State<EditPageCompleteScreen> {
                     height: 63,
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: const BorderRadius.all(Radius.circular(15)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
                         boxShadow: [
                           BoxShadow(
                               color: const Color.fromARGB(255, 95, 51, 225)
@@ -120,7 +134,8 @@ class _EditPageCompleteScreen extends State<EditPageCompleteScreen> {
                       decoration: InputDecoration(
                         labelText: 'Task Name',
                         labelStyle: textTheme.bodySmall,
-                        border: const OutlineInputBorder(borderSide: BorderSide.none),
+                        border: const OutlineInputBorder(
+                            borderSide: BorderSide.none),
                       ),
                     ),
                   ),
@@ -129,7 +144,8 @@ class _EditPageCompleteScreen extends State<EditPageCompleteScreen> {
                     height: 142,
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: const BorderRadius.all(Radius.circular(15)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
                         boxShadow: [
                           BoxShadow(
                               color: const Color.fromARGB(255, 95, 51, 225)
@@ -144,7 +160,8 @@ class _EditPageCompleteScreen extends State<EditPageCompleteScreen> {
                       decoration: InputDecoration(
                         labelText: 'Description',
                         labelStyle: textTheme.bodySmall,
-                        border: const OutlineInputBorder(borderSide: BorderSide.none),
+                        border: const OutlineInputBorder(
+                            borderSide: BorderSide.none),
                       ),
                     ),
                   ),
@@ -153,7 +170,8 @@ class _EditPageCompleteScreen extends State<EditPageCompleteScreen> {
                     height: 63,
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: const BorderRadius.all(Radius.circular(15)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
                         boxShadow: [
                           BoxShadow(
                               color: const Color.fromARGB(255, 95, 51, 225)
@@ -180,8 +198,8 @@ class _EditPageCompleteScreen extends State<EditPageCompleteScreen> {
                                 size: 48,
                               )),
                           controller: TextEditingController(
-                            text: _startDate != null
-                                ? '${_startDate!.day}/${_startDate!.month}/${_startDate!.year}'
+                            text: _startDate.value != null
+                                ? '${_startDate.value!.day}/${_startDate.value!.month}/${_startDate.value!.year}'
                                 : '',
                           ),
                         ),
@@ -193,7 +211,8 @@ class _EditPageCompleteScreen extends State<EditPageCompleteScreen> {
                     height: 63,
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: const BorderRadius.all(Radius.circular(15)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
                         boxShadow: [
                           BoxShadow(
                               color: const Color.fromARGB(255, 95, 51, 225)
@@ -220,8 +239,8 @@ class _EditPageCompleteScreen extends State<EditPageCompleteScreen> {
                                 size: 48,
                               )),
                           controller: TextEditingController(
-                            text: _endDate != null
-                                ? '${_endDate!.day}/${_endDate!.month}/${_endDate!.year}'
+                            text: _endDate.value != null
+                                ? '${_endDate.value!.day}/${_endDate.value!.month}/${_endDate.value!.year}'
                                 : '',
                           ),
                         ),
@@ -238,7 +257,7 @@ class _EditPageCompleteScreen extends State<EditPageCompleteScreen> {
                           Radius.circular(20),
                         )),
                     child: InkWell(
-                      onTap: addTaskButtonHandler,
+                      onTap: editTaskButtonHandler,
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Row(

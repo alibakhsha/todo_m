@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:todo_m/gen/assets.gen.dart';
 import 'package:todo_m/view/home_screen.dart';
 
 class FirstScreen extends StatelessWidget {
   void getStartedButtonHandler() {
+    GetStorage().write('isFirstLaunch', false);
     Get.offAll(HomeScreen());
   }
 
@@ -12,6 +14,12 @@ class FirstScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var textTheme = Theme.of(context).textTheme;
+
+    bool isFirstLaunch = GetStorage().read('isFirstLaunch') ?? true;
+
+    if (!isFirstLaunch) {
+      Get.offAll(HomeScreen());
+    }
 
     return Scaffold(
       body: Column(

@@ -39,5 +39,11 @@ var themsData = ThemeData(
           fontWeight: FontWeight.bold,
           color: Colors.grey,
         ),
+        bodyLarge: TextStyle(
+          fontFamily: "Lexenddeca",
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Colors.grey,
+        ),
         
         ));

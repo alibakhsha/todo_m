@@ -11,10 +11,30 @@ class TaskModel {
   IconData icon;
 
   TaskModel({
-    required this.icon,
     required this.taskName,
+    required this.taskDate,
     required this.isDone,
     required this.color,
-    required this.taskDate,
+    required this.icon,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'taskName': taskName,
+      'taskDate': taskDate,
+      'isDone': isDone.value,
+      'color': color.value,
+      'icon': icon.codePoint,
+    };
+  }
+
+  factory TaskModel.fromJson(Map<String, dynamic> json) {
+    return TaskModel(
+        taskName: json['taskName'],
+        taskDate: json['taskDate'],
+        isDone: RxBool(json['isDone']),
+        color: Color(json['color']),
+        icon: IconData(json['icon']));
+  }
+
 }

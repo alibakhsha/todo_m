@@ -14,8 +14,6 @@ class HomeScreen extends StatelessWidget {
 
   void addTaskButtonHandler() {
     Get.to(AddTaskScreen());
-    // controller.addTask(
-    //     "title", "date", Color.fromARGB(255, 244, 120, 184), Icons.work);
   }
 
   @override
@@ -61,7 +59,11 @@ class HomeScreen extends StatelessWidget {
             Container(
               height: 580,
               color: Colors.white,
-              child: Obx(
+              child: 
+              controller.tasks.length == 0 ? Center(
+                child: Text("List is empty",style: textTheme.bodyLarge,),
+              ):
+              Obx(
                 () => ListView.builder(
                     physics: const ClampingScrollPhysics(),
                     itemCount: controller.tasks.length,
@@ -78,7 +80,7 @@ class HomeScreen extends StatelessWidget {
                                     BorderRadius.all(Radius.circular(15)),
                                 color: task.color.withOpacity(0.2)),
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(12.0),
@@ -86,7 +88,10 @@ class HomeScreen extends StatelessWidget {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Column(children: [
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
                                         Icon(
                                           task.icon,
                                           size: 14,

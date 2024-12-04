@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_m/controller/home_controller.dart';
+import 'package:todo_m/models/list_data.dart';
 import 'package:todo_m/view/edit_page_complete_screen.dart';
 import 'package:todo_m/view/home_screen.dart';
 
@@ -70,23 +71,26 @@ class EditTaskScreen extends StatelessWidget {
                                     Padding(
                                       padding: const EdgeInsets.fromLTRB(
                                           12, 0, 0, 0),
-                                      child: Column(children: [
-                                        Icon(
-                                          task.icon,
-                                          size: 14,
-                                          color: task.color,
-                                        ),
-                                        Text(
-                                          task.taskName,
-                                          style: textTheme.bodyMedium,
-                                        ),
-                                        Text(
-                                          task.taskDate,
-                                          style: TextStyle(
-                                              color:
-                                                  task.color.withOpacity(0.3)),
-                                        ),
-                                      ]),
+                                      child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Icon(
+                                              task.icon,
+                                              size: 14,
+                                              color: task.color,
+                                            ),
+                                            Text(
+                                              task.taskName,
+                                              style: textTheme.bodyMedium,
+                                            ),
+                                            Text(
+                                              task.taskDate,
+                                              style: TextStyle(
+                                                  color: task.color
+                                                      .withOpacity(0.3)),
+                                            ),
+                                          ]),
                                     ),
                                     Row(
                                       children: [
@@ -112,7 +116,7 @@ class EditTaskScreen extends StatelessWidget {
                                                       Radius.circular(15))),
                                           child: IconButton(
                                               onPressed: () =>
-                                                  controller.tasks.remove(task),
+                                                  controller.deleteTask(index),
                                               icon: ImageIcon(
                                                 AssetImage(
                                                     Assets.images.delete.path),

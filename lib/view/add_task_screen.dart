@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:todo_m/controller/home_controller.dart';
+import 'package:todo_m/view/home_screen.dart';
 
 import '../gen/assets.gen.dart';
 
-
-
 class AddTaskScreen extends StatelessWidget {
+  final HomeController controller = Get.put(HomeController());
   final _taskGroups = ['Work', 'gym', 'study', 'Other'];
   String? _selectedTaskGroup;
   final TextEditingController _taskNameController = TextEditingController();
@@ -21,15 +22,36 @@ class AddTaskScreen extends StatelessWidget {
       lastDate: DateTime(2100),
     );
     if (picked != null) {
-        if (isStartDate) {
-          _startDate.value = picked;
-        } else {
-          _endDate.value = picked;
-        }
+      if (isStartDate) {
+        _startDate.value = picked;
+      } else {
+        _endDate.value = picked;
+      }
     }
   }
 
-  void addTaskButtonHandler() {}
+  void addTaskButtonHandler() {
+    if (_selectedTaskGroup == null ||
+        _taskNameController == null ||
+        _descriptionController == null ||
+        _startDate == null ||
+        _endDate == null) {
+      Get.snackbar(
+        'Snackbar',
+        'Please complete the fields correctly.',
+        snackPosition: SnackPosition.BOTTOM,
+        forwardAnimationCurve: Curves.elasticInOut,
+        reverseAnimationCurve: Curves.easeOut,
+      );
+    } else {
+      controller.addTask(
+          _selectedTaskGroup!,
+          '${_endDate.value!.day}/${_endDate.value!.month}/${_endDate.value!.year}',
+          Colors.pink,
+          Icons.work);
+      Get.offAll(HomeScreen());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +60,7 @@ class AddTaskScreen extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: Obx(
-          ()=> Padding(
+          () => Padding(
             padding: const EdgeInsets.fromLTRB(30, 62, 30, 0),
             child: Column(
               children: [
@@ -57,7 +79,8 @@ class AddTaskScreen extends StatelessWidget {
                       height: 63,
                       decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: const BorderRadius.all(const Radius.circular(15)),
+                          borderRadius:
+                              const BorderRadius.all(const Radius.circular(15)),
                           boxShadow: [
                             BoxShadow(
                                 color: const Color.fromARGB(255, 95, 51, 225)
@@ -79,7 +102,8 @@ class AddTaskScreen extends StatelessWidget {
                           ),
                           labelText: 'Task Group',
                           labelStyle: textTheme.bodySmall,
-                          border: const OutlineInputBorder(borderSide: BorderSide.none),
+                          border: const OutlineInputBorder(
+                              borderSide: BorderSide.none),
                         ),
                         value: _selectedTaskGroup,
                         items: _taskGroups.map((group) {
@@ -89,7 +113,7 @@ class AddTaskScreen extends StatelessWidget {
                           );
                         }).toList(),
                         onChanged: (value) {
-                            _selectedTaskGroup = value;
+                          _selectedTaskGroup = value;
                         },
                       ),
                     ),
@@ -98,7 +122,8 @@ class AddTaskScreen extends StatelessWidget {
                       height: 63,
                       decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: const BorderRadius.all(Radius.circular(15)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(15)),
                           boxShadow: [
                             BoxShadow(
                                 color: const Color.fromARGB(255, 95, 51, 225)
@@ -112,7 +137,8 @@ class AddTaskScreen extends StatelessWidget {
                         decoration: InputDecoration(
                           labelText: 'Task Name',
                           labelStyle: textTheme.bodySmall,
-                          border: const OutlineInputBorder(borderSide: BorderSide.none),
+                          border: const OutlineInputBorder(
+                              borderSide: BorderSide.none),
                         ),
                       ),
                     ),
@@ -121,7 +147,8 @@ class AddTaskScreen extends StatelessWidget {
                       height: 142,
                       decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: const BorderRadius.all(Radius.circular(15)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(15)),
                           boxShadow: [
                             BoxShadow(
                                 color: const Color.fromARGB(255, 95, 51, 225)
@@ -136,7 +163,8 @@ class AddTaskScreen extends StatelessWidget {
                         decoration: InputDecoration(
                           labelText: 'Description',
                           labelStyle: textTheme.bodySmall,
-                          border: const OutlineInputBorder(borderSide: BorderSide.none),
+                          border: const OutlineInputBorder(
+                              borderSide: BorderSide.none),
                         ),
                       ),
                     ),
@@ -145,7 +173,8 @@ class AddTaskScreen extends StatelessWidget {
                       height: 63,
                       decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: const BorderRadius.all(Radius.circular(15)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(15)),
                           boxShadow: [
                             BoxShadow(
                                 color: const Color.fromARGB(255, 95, 51, 225)
@@ -185,7 +214,8 @@ class AddTaskScreen extends StatelessWidget {
                       height: 63,
                       decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: const BorderRadius.all(Radius.circular(15)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(15)),
                           boxShadow: [
                             BoxShadow(
                                 color: const Color.fromARGB(255, 95, 51, 225)
