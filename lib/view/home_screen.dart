@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:todo_m/models/task_model.dart';
 import 'package:todo_m/view/add_task_screen.dart';
 import 'package:todo_m/controller/home_controller.dart';
 import 'package:todo_m/view/edit_task_screen.dart';
@@ -59,96 +60,106 @@ class HomeScreen extends StatelessWidget {
             Container(
               height: 580,
               color: Colors.white,
-              child: 
-              controller.tasks.length == 0 ? Center(
-                child: Text("List is empty",style: textTheme.bodyLarge,),
-              ):
-              Obx(
-                () => ListView.builder(
-                    physics: const ClampingScrollPhysics(),
-                    itemCount: controller.tasks.length,
-                    itemBuilder: (context, index) {
-                      var task = controller.tasks[index];
-                      return Padding(
-                          padding: EdgeInsets.only(bottom: 8),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    left: BorderSide(
-                                        width: 4, color: task.color)),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15)),
-                                color: task.color.withOpacity(0.2)),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+              child: controller.tasks.isEmpty
+                  ? Center(
+                      child: Text(
+                        "List is empty",
+                        style: textTheme.bodyLarge,
+                      ),
+                    )
+                  : Obx(
+                      () => ListView.builder(
+                          physics: const ClampingScrollPhysics(),
+                          itemCount: controller.tasks.length,
+                          itemBuilder: (context, index) {
+                            var task = controller.tasks[index];
+                            return Padding(
+                                padding: const EdgeInsets.only(bottom: 8),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                          left: BorderSide(
+                                              width: 4, color: task.color)),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(15)),
+                                      color: task.color.withOpacity(0.1)),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                        Icon(
-                                          task.icon,
-                                          size: 14,
-                                          color: task.color,
+                                      Padding(
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Icon(
+                                                    task.icon,
+                                                    size: 14,
+                                                    color: task.color,
+                                                  ),
+                                                  Text(
+                                                    task.taskName,
+                                                    style: TextStyle(
+                                                        color: task.color),
+                                                  ),
+                                                  Text(
+                                                    task.taskDate,
+                                                    style: TextStyle(
+                                                        color: task.color
+                                                            .withOpacity(0.3)),
+                                                  ),
+                                                ]),
+                                            Obx(
+                                              () => InkWell(
+                                                  onTap: () => controller
+                                                      .toggleTask(index),
+                                                  child: task.isDone.value
+                                                      ? Container(
+                                                          width: 25,
+                                                          height: 25,
+                                                          decoration: const BoxDecoration(
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
+                                                                      .circular(
+                                                                          1000)),
+                                                              color:
+                                                                  Colors.white),
+                                                          child: Center(
+                                                              child: ImageIcon(
+                                                            AssetImage(Assets
+                                                                .images
+                                                                .checkTask
+                                                                .path),
+                                                            size: 13,
+                                                            color: task.color,
+                                                          )),
+                                                        )
+                                                      : Container(
+                                                          width: 25,
+                                                          height: 25,
+                                                          decoration: const BoxDecoration(
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
+                                                                      .circular(
+                                                                          1000)),
+                                                              color:
+                                                                  Colors.white),
+                                                        )),
+                                            ),
+                                          ],
                                         ),
-                                        Text(
-                                          task.taskName,
-                                          style: textTheme.bodyMedium,
-                                        ),
-                                        Text(
-                                          task.taskDate,
-                                          style: TextStyle(
-                                              color:
-                                                  task.color.withOpacity(0.3)),
-                                        ),
-                                      ]),
-                                      Obx(
-                                        () => InkWell(
-                                            onTap: () =>
-                                                controller.toggleTask(index),
-                                            child: task.isDone.value
-                                                ? Container(
-                                                    width: 25,
-                                                    height: 25,
-                                                    decoration: const BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    1000)),
-                                                        color: Colors.white),
-                                                    child: Center(
-                                                        child: ImageIcon(
-                                                      AssetImage(Assets.images
-                                                          .checkTask.path),
-                                                      size: 13,
-                                                      color: task.color,
-                                                    )),
-                                                  )
-                                                : Container(
-                                                    width: 25,
-                                                    height: 25,
-                                                    decoration: const BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    1000)),
-                                                        color: Colors.white),
-                                                  )),
-                                      ),
+                                      )
                                     ],
                                   ),
-                                )
-                              ],
-                            ),
-                          ));
-                    }),
-              ),
+                                ));
+                          }),
+                    ),
             ),
             const SizedBox(
               height: 30,

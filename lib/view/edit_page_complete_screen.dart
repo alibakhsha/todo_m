@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:todo_m/controller/home_controller.dart';
-import 'package:todo_m/models/data_model.dart';
 
 import '../gen/assets.gen.dart';
 

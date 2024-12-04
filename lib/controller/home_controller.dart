@@ -19,6 +19,7 @@ class HomeController extends GetxController {
     String date,
     Color color,
     IconData icon,
+    String taskGroup,
   ) {
     tasks.add(TaskModel(
       icon: icon,
@@ -26,6 +27,7 @@ class HomeController extends GetxController {
       color: color,
       taskDate: date,
       isDone: false.obs,
+      taskGroup: taskGroup,
     ));
     saveTasks();
   }

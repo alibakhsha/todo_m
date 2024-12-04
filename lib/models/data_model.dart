@@ -1,7 +1,6 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:todo_m/models/task_model.dart';
 
 class TaskModel {
   String taskName;
@@ -9,6 +8,7 @@ class TaskModel {
   RxBool isDone;
   Color color;
   IconData icon;
+  String taskGroup;
 
   TaskModel({
     required this.taskName,
@@ -16,6 +16,7 @@ class TaskModel {
     required this.isDone,
     required this.color,
     required this.icon,
+    required this.taskGroup,
   });
 
   Map<String, dynamic> toJson() {
@@ -25,6 +26,7 @@ class TaskModel {
       'isDone': isDone.value,
       'color': color.value,
       'icon': icon.codePoint,
+      'taskGroup': taskGroup,
     };
   }
 
@@ -34,7 +36,9 @@ class TaskModel {
         taskDate: json['taskDate'],
         isDone: RxBool(json['isDone']),
         color: Color(json['color']),
-        icon: IconData(json['icon']));
+        icon: IconData(
+          json['icon'],
+        ),
+        taskGroup: 'taskGroup');
   }
-
 }

@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_m/controller/home_controller.dart';
+import 'package:todo_m/models/task_model.dart';
 import 'package:todo_m/view/home_screen.dart';
+
 
 import '../gen/assets.gen.dart';
 
+// ignore: must_be_immutable
 class AddTaskScreen extends StatelessWidget {
   final HomeController controller = Get.put(HomeController());
-  final _taskGroups = ['Work', 'gym', 'study', 'Other'];
+  Rx<TaskGroup> taskGroup = TaskGroup(null, null, null).obs;
   String? _selectedTaskGroup;
+
   final TextEditingController _taskNameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final Rx<DateTime?> _startDate = Rx<DateTime?>(null);
   final Rx<DateTime?> _endDate = Rx<DateTime?>(null);
 
+  // AddTaskScreen({super.key, required this.task});
   Future<void> _pickDate(BuildContext context, bool isStartDate) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -32,8 +37,8 @@ class AddTaskScreen extends StatelessWidget {
 
   void addTaskButtonHandler() {
     if (_selectedTaskGroup == null ||
-        _taskNameController == null ||
-        _descriptionController == null ||
+        _taskNameController.text.isEmpty ||
+        _descriptionController.text.isEmpty ||
         _startDate == null ||
         _endDate == null) {
       Get.snackbar(
@@ -43,14 +48,39 @@ class AddTaskScreen extends StatelessWidget {
         forwardAnimationCurve: Curves.elasticInOut,
         reverseAnimationCurve: Curves.easeOut,
       );
-    } else {
-      controller.addTask(
-          _selectedTaskGroup!,
-          '${_endDate.value!.day}/${_endDate.value!.month}/${_endDate.value!.year}',
-          Colors.pink,
-          Icons.work);
-      Get.offAll(HomeScreen());
     }
+
+    final selectedGroup = TaskData.taskGroup.firstWhereOrNull(
+      (group) => group.name == _selectedTaskGroup,
+    );
+
+    if (selectedGroup == null) {
+      Get.snackbar(
+        'Snackbar',
+        'Invalid Task Group selection.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return;
+    }
+    controller.addTask(
+      _taskNameController.text,
+      '${_endDate.value!.day}/${_endDate.value!.month}/${_endDate.value!.year}',
+      selectedGroup.color!,
+      selectedGroup.icon!,
+      selectedGroup.name!,
+    );
+
+    Get.offAll(HomeScreen());
+
+    // else {
+    //   controller.addTask(
+    //       _selectedTaskGroup.value!,
+    //       '${_endDate.value!.day}/${_endDate.value!.month}/${_endDate.value!.year}',
+    //       taskGroup.value.color!,
+    //       taskGroup.value.icon!,
+    //       taskGroup.value.name!);
+    //   Get.offAll(HomeScreen());
+    // }
   }
 
   @override
@@ -80,7 +110,7 @@ class AddTaskScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius:
-                              const BorderRadius.all(const Radius.circular(15)),
+                              const BorderRadius.all(Radius.circular(15)),
                           boxShadow: [
                             BoxShadow(
                                 color: const Color.fromARGB(255, 95, 51, 225)
@@ -92,10 +122,6 @@ class AddTaskScreen extends StatelessWidget {
                       child: DropdownButtonFormField<String>(
                         iconSize: 0,
                         decoration: InputDecoration(
-                          prefixIcon: const Icon(
-                            Icons.work,
-                            color: Colors.pink,
-                          ),
                           suffixIcon: const Icon(
                             Icons.arrow_drop_down_rounded,
                             size: 48,
@@ -106,10 +132,16 @@ class AddTaskScreen extends StatelessWidget {
                               borderSide: BorderSide.none),
                         ),
                         value: _selectedTaskGroup,
-                        items: _taskGroups.map((group) {
-                          return DropdownMenuItem(
-                            value: group,
-                            child: Text(group),
+                        items: TaskData.taskGroup.map((group) {
+                          return DropdownMenuItem<String>(
+                            value: group.name,
+                            child: Row(
+                              children: [
+                                Icon(group.icon, color: group.color),
+                                const SizedBox(width: 8),
+                                Text(group.name!),
+                              ],
+                            ),
                           );
                         }).toList(),
                         onChanged: (value) {

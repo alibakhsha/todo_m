@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_m/controller/home_controller.dart';
-import 'package:todo_m/models/list_data.dart';
 import 'package:todo_m/view/edit_page_complete_screen.dart';
 import 'package:todo_m/view/home_screen.dart';
 
