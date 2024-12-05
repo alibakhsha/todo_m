@@ -4,7 +4,6 @@ import 'package:todo_m/controller/home_controller.dart';
 import 'package:todo_m/models/task_model.dart';
 import 'package:todo_m/view/home_screen.dart';
 
-
 import '../gen/assets.gen.dart';
 
 // ignore: must_be_immutable
@@ -39,8 +38,8 @@ class AddTaskScreen extends StatelessWidget {
     if (_selectedTaskGroup == null ||
         _taskNameController.text.isEmpty ||
         _descriptionController.text.isEmpty ||
-        _startDate == null ||
-        _endDate == null) {
+        _startDate.value == null ||
+        _endDate.value == null) {
       Get.snackbar(
         'Snackbar',
         'Please complete the fields correctly.',
@@ -48,13 +47,14 @@ class AddTaskScreen extends StatelessWidget {
         forwardAnimationCurve: Curves.elasticInOut,
         reverseAnimationCurve: Curves.easeOut,
       );
+      return;
     }
 
     final selectedGroup = TaskData.taskGroup.firstWhereOrNull(
       (group) => group.name == _selectedTaskGroup,
     );
 
-    if (selectedGroup == null) {
+    if (selectedGroup == null|| selectedGroup.name!.isEmpty) {
       Get.snackbar(
         'Snackbar',
         'Invalid Task Group selection.',
@@ -64,23 +64,15 @@ class AddTaskScreen extends StatelessWidget {
     }
     controller.addTask(
       _taskNameController.text,
+      '${_startDate.value!.day}/${_startDate.value!.month}/${_startDate.value!.year}',
       '${_endDate.value!.day}/${_endDate.value!.month}/${_endDate.value!.year}',
+      _descriptionController.text,
       selectedGroup.color!,
       selectedGroup.icon!,
       selectedGroup.name!,
     );
 
     Get.offAll(HomeScreen());
-
-    // else {
-    //   controller.addTask(
-    //       _selectedTaskGroup.value!,
-    //       '${_endDate.value!.day}/${_endDate.value!.month}/${_endDate.value!.year}',
-    //       taskGroup.value.color!,
-    //       taskGroup.value.icon!,
-    //       taskGroup.value.name!);
-    //   Get.offAll(HomeScreen());
-    // }
   }
 
   @override
@@ -137,7 +129,16 @@ class AddTaskScreen extends StatelessWidget {
                             value: group.name,
                             child: Row(
                               children: [
-                                Icon(group.icon, color: group.color),
+                                Container(
+                                    width: 24,
+                                    height: 24,
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(6)),
+                                      color: group.color!.withOpacity(0.2),
+                                    ),
+                                    child: Icon(group.icon,
+                                        size: 14, color: group.color)),
                                 const SizedBox(width: 8),
                                 Text(group.name!),
                               ],
@@ -201,87 +202,9 @@ class AddTaskScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    Container(
-                      height: 63,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(15)),
-                          boxShadow: [
-                            BoxShadow(
-                                color: const Color.fromARGB(255, 95, 51, 225)
-                                    .withOpacity(0.3),
-                                spreadRadius: 0,
-                                blurRadius: 15,
-                                offset: const Offset(0, 7))
-                          ]),
-                      child: GestureDetector(
-                        onTap: () => _pickDate(context, true),
-                        child: AbsorbPointer(
-                          child: TextField(
-                            decoration: InputDecoration(
-                                labelText: 'Start Date',
-                                labelStyle: textTheme.bodySmall,
-                                border: const OutlineInputBorder(
-                                    borderSide: BorderSide.none),
-                                prefixIcon: const Icon(
-                                  Icons.calendar_month_rounded,
-                                  color: Color.fromARGB(255, 95, 51, 225),
-                                ),
-                                suffixIcon: const Icon(
-                                  Icons.arrow_drop_down_rounded,
-                                  size: 48,
-                                )),
-                            controller: TextEditingController(
-                              text: _startDate.value != null
-                                  ? '${_startDate.value!.day}/${_startDate.value!.month}/${_startDate.value!.year}'
-                                  : '',
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    dateContainer(context, textTheme, true, 'Start Date',_startDate),
                     const SizedBox(height: 16),
-                    Container(
-                      height: 63,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(15)),
-                          boxShadow: [
-                            BoxShadow(
-                                color: const Color.fromARGB(255, 95, 51, 225)
-                                    .withOpacity(0.3),
-                                spreadRadius: 0,
-                                blurRadius: 15,
-                                offset: const Offset(0, 7))
-                          ]),
-                      child: GestureDetector(
-                        onTap: () => _pickDate(context, false),
-                        child: AbsorbPointer(
-                          child: TextField(
-                            decoration: InputDecoration(
-                                labelText: 'End Date',
-                                labelStyle: textTheme.bodySmall,
-                                border: const OutlineInputBorder(
-                                    borderSide: BorderSide.none),
-                                prefixIcon: const Icon(
-                                  Icons.calendar_month_rounded,
-                                  color: Color.fromARGB(255, 95, 51, 225),
-                                ),
-                                suffixIcon: const Icon(
-                                  Icons.arrow_drop_down_rounded,
-                                  size: 48,
-                                )),
-                            controller: TextEditingController(
-                              text: _endDate.value != null
-                                  ? '${_endDate.value!.day}/${_endDate.value!.month}/${_endDate.value!.year}'
-                                  : '',
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    dateContainer(context, textTheme, false, 'End Date',_endDate),
                     const SizedBox(height: 100),
                     Container(
                       width: size.width / 1.17,
@@ -315,6 +238,48 @@ class AddTaskScreen extends StatelessWidget {
                   ],
                 ),
               ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget dateContainer(
+      BuildContext context, TextTheme textTheme, bool pickDate, String s,Rx<DateTime?> dateTime) {
+    return Container(
+      height: 63,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
+          boxShadow: [
+            BoxShadow(
+                color: const Color.fromARGB(255, 95, 51, 225).withOpacity(0.3),
+                spreadRadius: 0,
+                blurRadius: 15,
+                offset: const Offset(0, 7))
+          ]),
+      child: GestureDetector(
+        onTap: () => _pickDate(context, pickDate),
+        child: AbsorbPointer(
+          child: TextField(
+            decoration: InputDecoration(
+                labelText: s,
+                labelStyle: textTheme.bodySmall,
+                border: const OutlineInputBorder(borderSide: BorderSide.none),
+                prefixIcon: ImageIcon(
+                  AssetImage(Assets.images.calendar.path),
+                  size: 14,
+                  color: const Color(0xff5F33E1),
+                ),
+                suffixIcon: const Icon(
+                  Icons.arrow_drop_down_rounded,
+                  size: 48,
+                )),
+            controller: TextEditingController(
+              text: dateTime.value != null
+                  ? '${dateTime.value!.day}/${dateTime.value!.month}/${dateTime.value!.year}'
+                  : '',
             ),
           ),
         ),

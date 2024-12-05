@@ -16,7 +16,9 @@ class HomeController extends GetxController {
 
   void addTask(
     String title,
-    String date,
+    String startDate,
+    String endDate,
+    String description,
     Color color,
     IconData icon,
     String taskGroup,
@@ -25,7 +27,9 @@ class HomeController extends GetxController {
       icon: icon,
       taskName: title,
       color: color,
-      taskDate: date,
+      taskStartDate: startDate,
+      taskEndDate: endDate,
+      description: description,
       isDone: false.obs,
       taskGroup: taskGroup,
     ));
@@ -56,5 +60,18 @@ class HomeController extends GetxController {
   void toggleTask(int index) {
     tasks[index].isDone.value = !tasks[index].isDone.value;
     saveTasks();
+  }
+
+    void updateTask(int index, TaskModel updatedTask) {
+    if (index >= 0 && index < tasks.length) {
+      tasks[index] = updatedTask;
+      saveTasks(); 
+    } else {
+      Get.snackbar(
+        'Error',
+        'Task not found!',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:todo_m/gen/assets.gen.dart';
 
 class TaskGroup {
    String? name;
@@ -11,9 +12,9 @@ class TaskGroup {
 
 class TaskData {
   static List<TaskGroup> taskGroup =[
-    TaskGroup('Work', Icons.work, const Color(0xffF478B8)),
-    TaskGroup('Gym', Icons.fitness_center, const Color(0xff39fc03)),
-    TaskGroup('Study', Icons.school, const Color(0xff5F33E1)),
-    TaskGroup('Other', Icons.list, const Color(0xfffc034e)),
+    TaskGroup('Work', Icons.work_outline, const Color(0xffF478B8)),
+    TaskGroup('Gym', Icons.fitness_center_outlined, const Color(0xff39fc03)),
+    TaskGroup('Study', Icons.school_outlined, const Color(0xff5F33E1)),
+    TaskGroup('Other', Icons.list_alt_outlined, const Color(0xff4a544a)),
   ];
 }

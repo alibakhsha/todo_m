@@ -109,7 +109,7 @@ class HomeScreen extends StatelessWidget {
                                                         color: task.color),
                                                   ),
                                                   Text(
-                                                    task.taskDate,
+                                                    task.taskEndDate,
                                                     style: TextStyle(
                                                         color: task.color
                                                             .withOpacity(0.3)),

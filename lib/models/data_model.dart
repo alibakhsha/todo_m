@@ -4,7 +4,9 @@ import 'package:todo_m/models/task_model.dart';
 
 class TaskModel {
   String taskName;
-  String taskDate;
+  String taskStartDate;
+  String taskEndDate;
+  String description;
   RxBool isDone;
   Color color;
   IconData icon;
@@ -12,7 +14,9 @@ class TaskModel {
 
   TaskModel({
     required this.taskName,
-    required this.taskDate,
+    required this.taskStartDate,
+    required this.taskEndDate,
+    required this.description,
     required this.isDone,
     required this.color,
     required this.icon,
@@ -22,7 +26,9 @@ class TaskModel {
   Map<String, dynamic> toJson() {
     return {
       'taskName': taskName,
-      'taskDate': taskDate,
+      'taskStartDate': taskStartDate,
+      'taskEndDate': taskEndDate,
+      'description': description,
       'isDone': isDone.value,
       'color': color.value,
       'icon': icon.codePoint,
@@ -33,12 +39,12 @@ class TaskModel {
   factory TaskModel.fromJson(Map<String, dynamic> json) {
     return TaskModel(
         taskName: json['taskName'],
-        taskDate: json['taskDate'],
+        taskStartDate: json['taskStartDate'].toString(),
+        taskEndDate: json['taskEndDate'].toString(),
+        description: json['description'].toString(),
         isDone: RxBool(json['isDone']),
         color: Color(json['color']),
-        icon: IconData(
-          json['icon'],
-        ),
-        taskGroup: 'taskGroup');
+        icon: IconData(json['icon']),
+        taskGroup: json['taskGroup']);
   }
 }

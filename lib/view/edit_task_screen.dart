@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_m/controller/home_controller.dart';
+import 'package:todo_m/models/data_model.dart';
 import 'package:todo_m/view/edit_page_complete_screen.dart';
 import 'package:todo_m/view/home_screen.dart';
 
@@ -13,8 +14,10 @@ class EditTaskScreen extends StatelessWidget {
     Get.offAll(HomeScreen());
   }
 
-  void editRoutePageHandler() {
-    Get.to(EditPageCompleteScreen());
+  void editRoutePageHandler(TaskModel task) {
+    Get.to(EditPageCompleteScreen(
+      task: task,
+    ));
   }
 
   void deleteTaskHandler() {
@@ -59,7 +62,7 @@ class EditTaskScreen extends StatelessWidget {
                                         width: 4, color: task.color)),
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(15)),
-                                color: task.color.withOpacity(0.2)),
+                                color: task.color.withOpacity(0.1)),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -81,10 +84,10 @@ class EditTaskScreen extends StatelessWidget {
                                             ),
                                             Text(
                                               task.taskName,
-                                              style: textTheme.bodyMedium,
+                                              style: TextStyle(color: task.color),
                                             ),
                                             Text(
-                                              task.taskDate,
+                                              task.taskEndDate,
                                               style: TextStyle(
                                                   color: task.color
                                                       .withOpacity(0.3)),
@@ -94,7 +97,8 @@ class EditTaskScreen extends StatelessWidget {
                                     Row(
                                       children: [
                                         InkWell(
-                                            onTap: editRoutePageHandler,
+                                            onTap: () =>
+                                                editRoutePageHandler(task),
                                             child: ImageIcon(
                                               AssetImage(Assets
                                                   .images.tablerEdit.path),

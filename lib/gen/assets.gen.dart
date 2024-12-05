@@ -19,6 +19,10 @@ class $AssetsImagesGen {
   AssetGenImage get arrowLeft =>
       const AssetGenImage('assets/images/arrow_left.png');
 
+  /// File path: assets/images/calendar.png
+  AssetGenImage get calendar =>
+      const AssetGenImage('assets/images/calendar.png');
+
   /// File path: assets/images/check_task.png
   AssetGenImage get checkTask =>
       const AssetGenImage('assets/images/check_task.png');
@@ -30,13 +34,36 @@ class $AssetsImagesGen {
   AssetGenImage get firstPageImage =>
       const AssetGenImage('assets/images/first_page_image.png');
 
+  /// File path: assets/images/fitness.png
+  AssetGenImage get fitness => const AssetGenImage('assets/images/fitness.png');
+
+  /// File path: assets/images/other.png
+  AssetGenImage get other => const AssetGenImage('assets/images/other.png');
+
+  /// File path: assets/images/study.png
+  AssetGenImage get study => const AssetGenImage('assets/images/study.png');
+
   /// File path: assets/images/tabler_edit.png
   AssetGenImage get tablerEdit =>
       const AssetGenImage('assets/images/tabler_edit.png');
 
+  /// File path: assets/images/work.png
+  AssetGenImage get work => const AssetGenImage('assets/images/work.png');
+
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [add, arrowLeft, checkTask, delete, firstPageImage, tablerEdit];
+  List<AssetGenImage> get values => [
+        add,
+        arrowLeft,
+        calendar,
+        checkTask,
+        delete,
+        firstPageImage,
+        fitness,
+        other,
+        study,
+        tablerEdit,
+        work
+      ];
 }
 
 class Assets {
