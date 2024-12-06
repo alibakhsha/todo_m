@@ -7,6 +7,7 @@ import 'package:todo_m/models/task_model.dart';
 
 import '../gen/assets.gen.dart';
 
+// ignore: must_be_immutable
 class EditPageCompleteScreen extends StatelessWidget {
   final TaskModel task;
   final HomeController controller = Get.put(HomeController());
@@ -22,7 +23,7 @@ class EditPageCompleteScreen extends StatelessWidget {
   EditPageCompleteScreen({super.key, required this.task}) {
     _selectedTaskGroup.value = task.taskGroup;
     _taskNameController.text = task.taskName;
-    _descriptionController.text = task.description ?? '';
+    _descriptionController.text = task.description;
 
     _startDate.value = _parseDate(task.taskStartDate);
     _endDate.value = _parseDate(task.taskEndDate);
@@ -240,7 +241,7 @@ class EditPageCompleteScreen extends StatelessWidget {
                                     borderSide: BorderSide.none),
                                 prefixIcon: ImageIcon(
                                   AssetImage(Assets.images.calendar.path),
-                                  color: Color.fromARGB(255, 95, 51, 225),
+                                  color: const Color.fromARGB(255, 95, 51, 225),
                                 ),
                                 suffixIcon: const Icon(
                                   Icons.arrow_drop_down_rounded,
@@ -283,7 +284,7 @@ class EditPageCompleteScreen extends StatelessWidget {
                                     borderSide: BorderSide.none),
                                 prefixIcon: ImageIcon(
                                   AssetImage(Assets.images.calendar.path),
-                                  color: Color.fromARGB(255, 95, 51, 225),
+                                  color: const Color.fromARGB(255, 95, 51, 225),
                                 ),
                                 suffixIcon: const Icon(
                                   Icons.arrow_drop_down_rounded,

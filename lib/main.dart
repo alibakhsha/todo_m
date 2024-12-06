@@ -13,7 +13,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   final bool isFirstLaunch;
 
-  MyApp() : isFirstLaunch = GetStorage().read('isFirstLaunch') ?? true;
+  MyApp({super.key}) : isFirstLaunch = GetStorage().read('isFirstLaunch') ?? true;
 
   // This widget is the root of your application.
   @override
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: themsData,
-      home: isFirstLaunch ? FirstScreen() : HomeScreen(),
+      home: isFirstLaunch ? const FirstScreen() : HomeScreen(),
     );
   }
 }

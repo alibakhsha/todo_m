@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_m/models/task_model.dart';
+
 
 class TaskModel {
   String taskName;
@@ -12,7 +12,8 @@ class TaskModel {
   IconData icon;
   String taskGroup;
 
-  TaskModel({
+  TaskModel(
+    {
     required this.taskName,
     required this.taskStartDate,
     required this.taskEndDate,
@@ -44,7 +45,7 @@ class TaskModel {
         description: json['description'].toString(),
         isDone: RxBool(json['isDone']),
         color: Color(json['color']),
-        icon: IconData(json['icon']),
+        icon: IconData(json['icon'], fontFamily: 'MaterialIcons'),
         taskGroup: json['taskGroup']);
   }
 }

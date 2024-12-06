@@ -5,6 +5,8 @@ import 'package:todo_m/gen/assets.gen.dart';
 import 'package:todo_m/view/home_screen.dart';
 
 class FirstScreen extends StatelessWidget {
+  const FirstScreen({super.key});
+
   void getStartedButtonHandler() {
     GetStorage().write('isFirstLaunch', false);
     Get.offAll(HomeScreen());

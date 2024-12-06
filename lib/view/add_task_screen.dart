@@ -11,11 +11,12 @@ class AddTaskScreen extends StatelessWidget {
   final HomeController controller = Get.put(HomeController());
   Rx<TaskGroup> taskGroup = TaskGroup(null, null, null).obs;
   String? _selectedTaskGroup;
-
   final TextEditingController _taskNameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final Rx<DateTime?> _startDate = Rx<DateTime?>(null);
   final Rx<DateTime?> _endDate = Rx<DateTime?>(null);
+
+  AddTaskScreen({super.key});
 
   // AddTaskScreen({super.key, required this.task});
   Future<void> _pickDate(BuildContext context, bool isStartDate) async {
@@ -54,7 +55,7 @@ class AddTaskScreen extends StatelessWidget {
       (group) => group.name == _selectedTaskGroup,
     );
 
-    if (selectedGroup == null|| selectedGroup.name!.isEmpty) {
+    if (selectedGroup == null || selectedGroup.name!.isEmpty) {
       Get.snackbar(
         'Snackbar',
         'Invalid Task Group selection.',
@@ -202,9 +203,11 @@ class AddTaskScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    dateContainer(context, textTheme, true, 'Start Date',_startDate),
+                    dateContainer(
+                        context, textTheme, true, 'Start Date', _startDate),
                     const SizedBox(height: 16),
-                    dateContainer(context, textTheme, false, 'End Date',_endDate),
+                    dateContainer(
+                        context, textTheme, false, 'End Date', _endDate),
                     const SizedBox(height: 100),
                     Container(
                       width: size.width / 1.17,
@@ -245,8 +248,8 @@ class AddTaskScreen extends StatelessWidget {
     );
   }
 
-  Widget dateContainer(
-      BuildContext context, TextTheme textTheme, bool pickDate, String s,Rx<DateTime?> dateTime) {
+  Widget dateContainer(BuildContext context, TextTheme textTheme, bool pickDate,
+      String s, Rx<DateTime?> dateTime) {
     return Container(
       height: 63,
       decoration: BoxDecoration(

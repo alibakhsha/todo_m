@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_m/models/task_model.dart';
 import 'package:todo_m/view/add_task_screen.dart';
 import 'package:todo_m/controller/home_controller.dart';
 import 'package:todo_m/view/edit_task_screen.dart';
@@ -8,6 +7,8 @@ import 'package:todo_m/gen/assets.gen.dart';
 
 class HomeScreen extends StatelessWidget {
   final HomeController controller = Get.put(HomeController());
+
+   HomeScreen({super.key});
 
   void editButtonHandler() {
     Get.to(EditTaskScreen());

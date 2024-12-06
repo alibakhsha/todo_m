@@ -10,6 +10,8 @@ import '../gen/assets.gen.dart';
 class EditTaskScreen extends StatelessWidget {
   final HomeController controller = Get.put(HomeController());
 
+   EditTaskScreen({super.key});
+
   void changeButtonHandler() {
     Get.offAll(HomeScreen());
   }
