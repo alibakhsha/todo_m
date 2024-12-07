@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 class TaskModel {
   String taskName;
   String taskStartDate;
@@ -12,8 +11,7 @@ class TaskModel {
   IconData icon;
   String taskGroup;
 
-  TaskModel(
-    {
+  TaskModel({
     required this.taskName,
     required this.taskStartDate,
     required this.taskEndDate,
@@ -26,11 +24,11 @@ class TaskModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'taskName': taskName,
-      'taskStartDate': taskStartDate,
+      'title': taskName,
+      'createdAt': taskStartDate,
       'taskEndDate': taskEndDate,
       'description': description,
-      'isDone': isDone.value,
+      'isCompleted': isDone.value,
       'color': color.value,
       'icon': icon.codePoint,
       'taskGroup': taskGroup,
@@ -39,11 +37,11 @@ class TaskModel {
 
   factory TaskModel.fromJson(Map<String, dynamic> json) {
     return TaskModel(
-        taskName: json['taskName'],
-        taskStartDate: json['taskStartDate'].toString(),
+        taskName: json['title'],
+        taskStartDate: json['createdAt'].toString(),
         taskEndDate: json['taskEndDate'].toString(),
         description: json['description'].toString(),
-        isDone: RxBool(json['isDone']),
+        isDone: RxBool(json['isCompleted']),
         color: Color(json['color']),
         icon: IconData(json['icon'], fontFamily: 'MaterialIcons'),
         taskGroup: json['taskGroup']);

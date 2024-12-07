@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:todo_m/controller/home_controller.dart';
+import 'package:todo_m/controller/task_controller.dart';
+import 'package:todo_m/models/api_task_model.dart';
 import 'package:todo_m/models/data_model.dart';
 import 'package:todo_m/models/task_model.dart';
 
@@ -9,8 +11,10 @@ import '../gen/assets.gen.dart';
 
 // ignore: must_be_immutable
 class EditPageCompleteScreen extends StatelessWidget {
-  final TaskModel task;
-  final HomeController controller = Get.put(HomeController());
+  final TaskModel taskModel;
+  final ApiTaskModel apiTaskModel;
+  final HomeController homeController = Get.put(HomeController());
+  final TaskController taskController = Get.put(TaskController());
   Rx<TaskGroup> taskGroup = TaskGroup(null, null, null).obs;
   final Rx<String?> _selectedTaskGroup = Rx<String?>(null);
   final TextEditingController _taskNameController = TextEditingController();
@@ -20,13 +24,14 @@ class EditPageCompleteScreen extends StatelessWidget {
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
 
-  EditPageCompleteScreen({super.key, required this.task}) {
-    _selectedTaskGroup.value = task.taskGroup;
-    _taskNameController.text = task.taskName;
-    _descriptionController.text = task.description;
+  EditPageCompleteScreen(
+      {super.key, required this.taskModel, required this.apiTaskModel}) {
+    _selectedTaskGroup.value = taskModel.taskGroup;
+    _taskNameController.text = taskModel.taskName;
+    _descriptionController.text = taskModel.description;
 
-    _startDate.value = _parseDate(task.taskStartDate);
-    _endDate.value = _parseDate(task.taskEndDate);
+    _startDate.value = _parseDate(taskModel.taskStartDate);
+    _endDate.value = _parseDate(taskModel.taskEndDate);
   }
 
   DateTime _parseDate(String dateString) {
@@ -71,14 +76,27 @@ class EditPageCompleteScreen extends StatelessWidget {
         reverseAnimationCurve: Curves.easeOut,
       );
     } else {
-      task.taskName = _taskNameController.text;
-      task.taskGroup = _selectedTaskGroup.value!;
-      task.taskStartDate =
+      taskModel.taskName = _taskNameController.text;
+      taskModel.taskGroup = _selectedTaskGroup.value!;
+      taskModel.taskStartDate =
           '${_startDate.value!.day}/${_startDate.value!.month}/${_startDate.value!.year}';
-      task.taskEndDate =
+      taskModel.taskEndDate =
           '${_endDate.value!.day}/${_endDate.value!.month}/${_endDate.value!.year}';
 
-      controller.updateTask(controller.tasks.indexOf(task), task);
+      homeController.updateTask(
+          homeController.tasks.indexOf(taskModel), taskModel);
+
+      ApiTaskModel updatedTask = ApiTaskModel(
+        id: apiTaskModel.id, // استفاده از شناسه تسک فعلی
+        title: _taskNameController.text,
+        description: _descriptionController.text,
+        isCompleted:
+            apiTaskModel.isCompleted, // فرض می‌کنیم که این فیلد هم وجود دارد
+        createdAt: apiTaskModel.createdAt, // تاریخ ایجاد اولیه
+      );
+
+      taskController.updateTask(apiTaskModel.id.toString(), updatedTask);
+      print(apiTaskModel.toJson());
       Get.back();
     }
   }

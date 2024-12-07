@@ -75,10 +75,6 @@ class HomeController extends GetxController {
   }
 }
 
-
-
-
-
 // import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
 // import 'package:dio/dio.dart';
@@ -194,5 +190,190 @@ class HomeController extends GetxController {
 //         snackPosition: SnackPosition.BOTTOM,
 //       );
 //     }
+//   }
+// }
+
+// import 'package:get/get.dart';
+// import 'package:todo_m/models/api_task_model.dart';
+// import 'package:todo_m/models/data_model.dart';
+// import 'package:todo_m/service/api_service.dart';
+
+// class HomeController extends GetxController {
+//   var tasks = <TaskModel>[].obs;
+//   var apiTasks = <ApiTaskModel>[].obs;
+//   final ApiService _apiService = ApiService();
+
+//   @override
+//   void onInit() {
+//     super.onInit();
+//     fetchTasksFromApi();
+//   }
+
+//   void fetchTasksFromApi() async {
+//     try {
+//       final fetchedApiTasks = await _apiService.fetchTasks();
+//       apiTasks.assignAll(fetchedApiTasks);
+//     } catch (e) {
+//       Get.snackbar('Error', 'Failed to fetch tasks: $e');
+//     }
+//   }
+
+//   void addApiTask(ApiTaskModel task) async {
+//     try {
+//       final newTask = await _apiService.createTask(task);
+//       apiTasks.add(newTask);
+//     } catch (e) {
+//       Get.snackbar('Error', 'Failed to add task: $e');
+//     }
+//   }
+
+//   void deleteApiTask(String taskId) async {
+//     try {
+//       await _apiService.deleteTask(taskId);
+//       apiTasks.removeWhere((task) => task.id.toString() == taskId);
+//     } catch (e) {
+//       Get.snackbar('Error', 'Failed to delete task: $e');
+//     }
+//   }
+
+//   void updateApiTask(String taskId, ApiTaskModel updatedTask) async {
+//     try {
+//       final task = await _apiService.updateTask(taskId, updatedTask.toJson());
+//       final index = apiTasks.indexWhere((t) => t.id.toString() == taskId);
+//       if (index != -1) {
+//         apiTasks[index] = task;
+//       }
+//     } catch (e) {
+//       Get.snackbar('Error', 'Failed to update task: $e');
+//     }
+//   }
+
+//   void toggleTask(int index) async {
+//     try {
+//       // یافتن تسک مربوطه
+//       final task = apiTasks[index];
+
+//       // ایجاد نسخه به‌روزرسانی‌شده از تسک
+//       final updatedTask = ApiTaskModel(
+//         id: task.id,
+//         title: task.title,
+//         description: task.description,
+//         isCompleted: !task.isCompleted, // تغییر وضعیت
+//         createdAt: task.createdAt,
+//       );
+
+//       // ارسال تغییرات به سرور
+//       updateApiTask(task.id.toString(), updatedTask);
+
+//       // به‌روزرسانی لیست محلی
+//       apiTasks[index] = updatedTask;
+//     } catch (e) {
+//       Get.snackbar('Error', 'Failed to toggle task: $e');
+//     }
+//   }
+// }
+
+
+// import 'package:flutter/material.dart';
+// import 'package:get/get.dart';
+// import 'package:get_storage/get_storage.dart';
+// import 'package:todo_m/models/data_model.dart';
+// import 'package:todo_m/service/api_service.dart';
+
+// class HomeController extends GetxController {
+//   var tasks = <TaskModel>[].obs;
+//   final box = GetStorage();
+//   final ApiService apiService = ApiService();
+
+//   @override
+//   void onInit() {
+//     super.onInit();
+//     loadTasks();
+//   }
+
+//   void loadTasks() async {
+//     try {
+//       tasks.assignAll(await apiService.getTasks());
+//     } catch (e) {
+//       Get.snackbar('Error', 'Failed to load tasks');
+//     }
+//   }
+
+//   void addTask(TaskModel task) async {
+//     try {
+//       await apiService.createTask(task);
+//       tasks.add(task);
+//       saveTasks();
+//     } catch (e) {
+//       Get.snackbar('Error', 'Failed to create task');
+//     }
+//   }
+
+//   // void addTask(
+// //   String id,
+// //   String title,
+// //   String startDate,
+// //   String endDate,
+// //   String description,
+// //   Color color,
+// //   IconData icon,
+// //   String taskGroup,
+// // ) async {
+// //   TaskModel newTask = TaskModel(
+// //     id: id,
+// //     taskName: title,
+// //     taskStartDate: startDate,
+// //     taskEndDate: endDate,
+// //     description: description,
+// //     isDone: false.obs,
+// //     color: color,
+// //     icon: icon,
+// //     taskGroup: taskGroup,
+// //   );
+
+// //   try {
+// //     await apiService.createTask(newTask);
+// //     tasks.add(newTask);
+// //     saveTasks();
+// //   } catch (e) {
+// //     Get.snackbar('Error', 'Failed to create task');
+// //   }
+// // }
+
+
+//   void updateTask(int index, TaskModel updatedTask) async {
+//     if (index >= 0 && index < tasks.length) {
+//       try {
+//         await apiService.updateTask(tasks[index].id as int, updatedTask);
+//         tasks[index] = updatedTask;
+//         saveTasks();
+//       } catch (e) {
+//         Get.snackbar('Error', 'Failed to update task');
+//       }
+//     } else {
+//       Get.snackbar('Error', 'Task not found!');
+//     }
+//   }
+
+//   void deleteTask(int index) async {
+//     if (index >= 0 && index < tasks.length) {
+//       try {
+//         await apiService.deleteTask(tasks[index].id as int);
+//         tasks.removeAt(index);
+//         saveTasks();
+//       } catch (e) {
+//         Get.snackbar('Error', 'Failed to delete task');
+//       }
+//     }
+//   }
+
+//   void saveTasks() {
+//     List<Map<String, dynamic>> jsonTasks = tasks.map((task) => task.toJson()).toList();
+//     box.write('tasks', jsonTasks);
+//   }
+
+//   void toggleTask(int index) {
+//     tasks[index].isDone.value = !tasks[index].isDone.value;
+//     saveTasks();
 //   }
 // }

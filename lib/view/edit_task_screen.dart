@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_m/controller/home_controller.dart';
+import 'package:todo_m/controller/task_controller.dart';
+import 'package:todo_m/models/api_task_model.dart';
 import 'package:todo_m/models/data_model.dart';
 import 'package:todo_m/view/edit_page_complete_screen.dart';
 import 'package:todo_m/view/home_screen.dart';
@@ -8,17 +10,19 @@ import 'package:todo_m/view/home_screen.dart';
 import '../gen/assets.gen.dart';
 
 class EditTaskScreen extends StatelessWidget {
-  final HomeController controller = Get.put(HomeController());
+  final HomeController homeController = Get.put(HomeController());
+  final TaskController taskController = Get.put(TaskController());
 
-   EditTaskScreen({super.key});
+  EditTaskScreen({super.key});
 
   void changeButtonHandler() {
     Get.offAll(HomeScreen());
   }
 
-  void editRoutePageHandler(TaskModel task) {
+  void editRoutePageHandler(TaskModel taskModel, ApiTaskModel apiTaskModel) {
     Get.to(EditPageCompleteScreen(
-      task: task,
+      taskModel: taskModel,
+      apiTaskModel: apiTaskModel,
     ));
   }
 
@@ -52,9 +56,10 @@ class EditTaskScreen extends StatelessWidget {
               child: Obx(
                 () => ListView.builder(
                     physics: const ClampingScrollPhysics(),
-                    itemCount: controller.tasks.length,
+                    itemCount: taskController.tasks.length,
                     itemBuilder: (context, index) {
-                      var task = controller.tasks[index];
+                      var task = homeController.tasks[index];
+                      var apiTask = taskController.tasks[index];
                       return Padding(
                           padding: const EdgeInsets.only(bottom: 8),
                           child: Container(
@@ -86,7 +91,8 @@ class EditTaskScreen extends StatelessWidget {
                                             ),
                                             Text(
                                               task.taskName,
-                                              style: TextStyle(color: task.color),
+                                              style:
+                                                  TextStyle(color: task.color),
                                             ),
                                             Text(
                                               task.taskEndDate,
@@ -99,8 +105,8 @@ class EditTaskScreen extends StatelessWidget {
                                     Row(
                                       children: [
                                         InkWell(
-                                            onTap: () =>
-                                                editRoutePageHandler(task),
+                                            onTap: () => editRoutePageHandler(
+                                                task, apiTask),
                                             child: ImageIcon(
                                               AssetImage(Assets
                                                   .images.tablerEdit.path),
@@ -120,8 +126,8 @@ class EditTaskScreen extends StatelessWidget {
                                                   bottomRight:
                                                       Radius.circular(15))),
                                           child: IconButton(
-                                              onPressed: () =>
-                                                  controller.deleteTask(index),
+                                              onPressed: () => homeController
+                                                  .deleteTask(index),
                                               icon: ImageIcon(
                                                 AssetImage(
                                                     Assets.images.delete.path),

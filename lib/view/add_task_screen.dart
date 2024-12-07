@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_m/controller/home_controller.dart';
+import 'package:todo_m/controller/task_controller.dart';
+import 'package:todo_m/models/api_task_model.dart';
+import 'package:todo_m/models/data_model.dart';
 import 'package:todo_m/models/task_model.dart';
 import 'package:todo_m/view/home_screen.dart';
 
@@ -8,7 +11,8 @@ import '../gen/assets.gen.dart';
 
 // ignore: must_be_immutable
 class AddTaskScreen extends StatelessWidget {
-  final HomeController controller = Get.put(HomeController());
+  final HomeController homeController = Get.put(HomeController());
+  final TaskController taskController = Get.put(TaskController());
   Rx<TaskGroup> taskGroup = TaskGroup(null, null, null).obs;
   String? _selectedTaskGroup;
   final TextEditingController _taskNameController = TextEditingController();
@@ -63,7 +67,7 @@ class AddTaskScreen extends StatelessWidget {
       );
       return;
     }
-    controller.addTask(
+    homeController.addTask(
       _taskNameController.text,
       '${_startDate.value!.day}/${_startDate.value!.month}/${_startDate.value!.year}',
       '${_endDate.value!.day}/${_endDate.value!.month}/${_endDate.value!.year}',
@@ -72,6 +76,17 @@ class AddTaskScreen extends StatelessWidget {
       selectedGroup.icon!,
       selectedGroup.name!,
     );
+
+    final task = ApiTaskModel(
+        id: DateTime.now().millisecondsSinceEpoch,
+        title: _taskNameController.text,
+        description: _descriptionController.text,
+        isCompleted: false,
+        createdAt: _startDate.value);
+
+    print(task.toJson());
+    taskController.createTask(task);
+    print('Sending task to API: ${task.toJson()}');
 
     Get.offAll(HomeScreen());
   }

@@ -1,18 +1,16 @@
-
-
 class ApiTaskModel {
-  final int id;
-  final String title;
+  final int? id;
+  final String? title;
   final String? description;
-  final bool isCompleted;
-  final DateTime createdAt;
+  final bool? isCompleted;
+  final DateTime? createdAt;
 
   ApiTaskModel({
-    required this.id,
-    required this.title,
+    this.id,
+    this.title,
     this.description,
-    required this.isCompleted,
-    required this.createdAt,
+    this.isCompleted,
+    this.createdAt,
   });
 
   factory ApiTaskModel.fromJson(Map<String, dynamic> json) {
@@ -21,7 +19,9 @@ class ApiTaskModel {
         title: json['title'],
         description: json['description'],
         isCompleted: json['isCompleted'],
-        createdAt: DateTime.parse(json['createdAt']));
+        createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null
+        
+        );
   }
 
   Map<String, dynamic> toJson() {
@@ -30,7 +30,7 @@ class ApiTaskModel {
       'title': title,
       'description': description,
       'isCompleted': isCompleted,
-      'createdAt': createdAt.toIso8601String(),
+      'createdAt': createdAt?.toIso8601String(),
     };
   }
 }

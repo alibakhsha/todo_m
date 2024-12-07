@@ -13,7 +13,8 @@ void main() async {
 class MyApp extends StatelessWidget {
   final bool isFirstLaunch;
 
-  MyApp({super.key}) : isFirstLaunch = GetStorage().read('isFirstLaunch') ?? true;
+  MyApp({super.key})
+      : isFirstLaunch = GetStorage().read('isFirstLaunch') ?? true;
 
   // This widget is the root of your application.
   @override

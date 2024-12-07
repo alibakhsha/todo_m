@@ -6,9 +6,9 @@ import 'package:todo_m/view/edit_task_screen.dart';
 import 'package:todo_m/gen/assets.gen.dart';
 
 class HomeScreen extends StatelessWidget {
-  final HomeController controller = Get.put(HomeController());
+  final HomeController homeController = Get.put(HomeController());
 
-   HomeScreen({super.key});
+  HomeScreen({super.key});
 
   void editButtonHandler() {
     Get.to(EditTaskScreen());
@@ -61,7 +61,7 @@ class HomeScreen extends StatelessWidget {
             Container(
               height: 580,
               color: Colors.white,
-              child: controller.tasks.isEmpty
+              child: homeController.tasks.isEmpty
                   ? Center(
                       child: Text(
                         "List is empty",
@@ -71,9 +71,9 @@ class HomeScreen extends StatelessWidget {
                   : Obx(
                       () => ListView.builder(
                           physics: const ClampingScrollPhysics(),
-                          itemCount: controller.tasks.length,
+                          itemCount: homeController.tasks.length,
                           itemBuilder: (context, index) {
-                            var task = controller.tasks[index];
+                            var task = homeController.tasks[index];
                             return Padding(
                                 padding: const EdgeInsets.only(bottom: 8),
                                 child: Container(
@@ -118,7 +118,7 @@ class HomeScreen extends StatelessWidget {
                                                 ]),
                                             Obx(
                                               () => InkWell(
-                                                  onTap: () => controller
+                                                  onTap: () => homeController
                                                       .toggleTask(index),
                                                   child: task.isDone.value
                                                       ? Container(
