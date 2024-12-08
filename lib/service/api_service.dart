@@ -29,6 +29,5 @@ class ApiService {
 
   Future<void> deleteTask(String taskId) async {
     await _dio.delete('/api/task/$taskId');
-        print('Task $taskId deleted successfully');
   }
 }

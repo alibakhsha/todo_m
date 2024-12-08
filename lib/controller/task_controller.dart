@@ -169,7 +169,7 @@ class TaskController extends GetxController {
     try {
       isLoading.value = true;
       errorMessage.value = '';
-      var del = await _apiService.deleteTask(taskId);
+      await _apiService.deleteTask(taskId);
       tasks.removeWhere((task) => task.id == taskId);
     } catch (e) {
       errorMessage.value = 'Failed to delete task: $e';
@@ -178,7 +178,6 @@ class TaskController extends GetxController {
     }
   }
 
-  // Toggle task completion status
   Future<void> toggleTask(String taskId) async {
     try {
       int index = tasks.indexWhere((task) => task.id == taskId);

@@ -1,9 +1,9 @@
 class ApiTaskModel {
-  final int? id;
-  final String? title;
-  final String? description;
+  int? id;
+  String? title;
+  String? description;
   bool? isCompleted;
-  final DateTime? createdAt;
+  DateTime? createdAt;
 
   ApiTaskModel({
     this.id,

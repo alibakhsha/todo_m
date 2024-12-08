@@ -76,6 +76,7 @@ class EditPageCompleteScreen extends StatelessWidget {
         reverseAnimationCurve: Curves.easeOut,
       );
     } else {
+      apiTaskModel.title = _taskNameController.text;
       taskModel.taskName = _taskNameController.text;
       taskModel.taskGroup = _selectedTaskGroup.value!;
       taskModel.taskStartDate =
@@ -87,16 +88,15 @@ class EditPageCompleteScreen extends StatelessWidget {
           homeController.tasks.indexOf(taskModel), taskModel);
 
       ApiTaskModel updatedTask = ApiTaskModel(
-        id: apiTaskModel.id, // استفاده از شناسه تسک فعلی
+        id: apiTaskModel.id,
         title: _taskNameController.text,
         description: _descriptionController.text,
-        isCompleted:
-            apiTaskModel.isCompleted, // فرض می‌کنیم که این فیلد هم وجود دارد
-        createdAt: apiTaskModel.createdAt, // تاریخ ایجاد اولیه
+        isCompleted: apiTaskModel.isCompleted,
+        createdAt: apiTaskModel.createdAt,
       );
 
       taskController.updateTask(apiTaskModel.id.toString(), updatedTask);
-      print(apiTaskModel.toJson());
+      taskController.fetchTasks();
       Get.back();
     }
   }
@@ -123,7 +123,7 @@ class EditPageCompleteScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Obx(() {
-                    TaskGroup? selectedGroup = TaskData.taskGroup.firstWhere(
+                    TaskData.taskGroup.firstWhere(
                       (group) => group.name == _selectedTaskGroup.value,
                       orElse: () => TaskGroup(null, null, null),
                     );

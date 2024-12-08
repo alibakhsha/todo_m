@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:todo_m/controller/home_controller.dart';
 import 'package:todo_m/controller/task_controller.dart';
 import 'package:todo_m/models/api_task_model.dart';
-import 'package:todo_m/models/data_model.dart';
 import 'package:todo_m/models/task_model.dart';
 import 'package:todo_m/view/home_screen.dart';
 
@@ -78,17 +77,16 @@ class AddTaskScreen extends StatelessWidget {
     );
 
     final task = ApiTaskModel(
-        id: DateTime.now().millisecondsSinceEpoch,
         title: _taskNameController.text,
         description: _descriptionController.text,
         isCompleted: false,
         createdAt: _startDate.value);
 
-    print(task.toJson());
     taskController.createTask(task);
-    print('Sending task to API: ${task.toJson()}');
+    taskController.fetchTasks();
+    taskController.update();
 
-    Get.offAll(HomeScreen());
+    Get.back();
   }
 
   @override

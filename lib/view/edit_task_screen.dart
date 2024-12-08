@@ -4,7 +4,7 @@ import 'package:todo_m/controller/home_controller.dart';
 import 'package:todo_m/controller/task_controller.dart';
 import 'package:todo_m/models/api_task_model.dart';
 import 'package:todo_m/models/data_model.dart';
-import 'package:todo_m/view/edit_page_complete_screen.dart';
+import 'package:todo_m/view/edit_complete_screen.dart';
 import 'package:todo_m/view/home_screen.dart';
 
 import '../gen/assets.gen.dart';
@@ -31,6 +31,7 @@ class EditTaskScreen extends StatelessWidget {
   void deleteTaskHandler(int index) {
     int taskId = taskController.tasks[index].id!;
     taskController.deleteTask(taskId.toString());
+    taskController.fetchTasks();
     taskController.update();
   }
 
@@ -107,7 +108,7 @@ class EditTaskScreen extends StatelessWidget {
                                                         color: task.color),
                                                   ),
                                                   Text(
-                                                    task.taskEndDate,
+                                                    '${apiTask.createdAt!.year.toString()}/${apiTask.createdAt!.month.toString()}/${apiTask.createdAt!.day.toString()}',
                                                     style: TextStyle(
                                                         color: task.color
                                                             .withOpacity(0.3)),
@@ -142,7 +143,9 @@ class EditTaskScreen extends StatelessWidget {
                                                                 Radius.circular(
                                                                     15))),
                                                 child: IconButton(
-                                                    onPressed: () =>deleteTaskHandler(index),
+                                                    onPressed: () =>
+                                                        deleteTaskHandler(
+                                                            index),
                                                     icon: ImageIcon(
                                                       AssetImage(Assets
                                                           .images.delete.path),

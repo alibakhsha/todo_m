@@ -115,7 +115,7 @@ class HomeScreen extends StatelessWidget {
                                                         color: task.color),
                                                   ),
                                                   Text(
-                                                    task.taskEndDate,
+                                                    '${apiTask.createdAt!.year.toString()}/${apiTask.createdAt!.month.toString()}/${apiTask.createdAt!.day.toString()}',
                                                     style: TextStyle(
                                                         color: task.color
                                                             .withOpacity(0.3)),
