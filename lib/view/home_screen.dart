@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:todo_m/controller/task_controller.dart';
 import 'package:todo_m/view/add_task_screen.dart';
 import 'package:todo_m/controller/home_controller.dart';
 import 'package:todo_m/view/edit_task_screen.dart';
@@ -7,14 +8,17 @@ import 'package:todo_m/gen/assets.gen.dart';
 
 class HomeScreen extends StatelessWidget {
   final HomeController homeController = Get.put(HomeController());
+  final TaskController taskController = Get.put(TaskController());
 
   HomeScreen({super.key});
 
   void editButtonHandler() {
+    taskController.update();
     Get.to(EditTaskScreen());
   }
 
   void addTaskButtonHandler() {
+    taskController.update();
     Get.to(AddTaskScreen());
   }
 
@@ -61,7 +65,7 @@ class HomeScreen extends StatelessWidget {
             Container(
               height: 580,
               color: Colors.white,
-              child: homeController.tasks.isEmpty
+              child: taskController.tasks.isEmpty
                   ? Center(
                       child: Text(
                         "List is empty",
@@ -71,9 +75,10 @@ class HomeScreen extends StatelessWidget {
                   : Obx(
                       () => ListView.builder(
                           physics: const ClampingScrollPhysics(),
-                          itemCount: homeController.tasks.length,
+                          itemCount: taskController.tasks.length,
                           itemBuilder: (context, index) {
                             var task = homeController.tasks[index];
+                            var apiTask = taskController.tasks[index];
                             return Padding(
                                 padding: const EdgeInsets.only(bottom: 8),
                                 child: Container(
@@ -105,7 +110,7 @@ class HomeScreen extends StatelessWidget {
                                                     color: task.color,
                                                   ),
                                                   Text(
-                                                    task.taskName,
+                                                    apiTask.title!,
                                                     style: TextStyle(
                                                         color: task.color),
                                                   ),

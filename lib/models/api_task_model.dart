@@ -2,7 +2,7 @@ class ApiTaskModel {
   final int? id;
   final String? title;
   final String? description;
-  final bool? isCompleted;
+  bool? isCompleted;
   final DateTime? createdAt;
 
   ApiTaskModel({
@@ -19,9 +19,9 @@ class ApiTaskModel {
         title: json['title'],
         description: json['description'],
         isCompleted: json['isCompleted'],
-        createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null
-        
-        );
+        createdAt: json['createdAt'] != null
+            ? DateTime.parse(json['createdAt'])
+            : null);
   }
 
   Map<String, dynamic> toJson() {

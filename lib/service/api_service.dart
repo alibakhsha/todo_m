@@ -19,7 +19,7 @@ class ApiService {
 
   Future<void> createTask(ApiTaskModel task) async {
     // await _dio.post('/api/task/create', data: task.toJson());
-    var post = await _dio.post('/api/task/create', data: task.toJson());
+     await _dio.post('/api/task/create', data: task.toJson());
     // print(post);
   }
 
@@ -29,5 +29,6 @@ class ApiService {
 
   Future<void> deleteTask(String taskId) async {
     await _dio.delete('/api/task/$taskId');
+        print('Task $taskId deleted successfully');
   }
 }
