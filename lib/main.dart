@@ -16,7 +16,6 @@ class MyApp extends StatelessWidget {
   MyApp({super.key})
       : isFirstLaunch = GetStorage().read('isFirstLaunch') ?? true;
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
